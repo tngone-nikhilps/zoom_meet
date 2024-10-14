@@ -101,8 +101,8 @@ const Preview: React.FC = () => {
     client
       .join(
         "Test",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZThSeU82RXFSTUdwbW51Q3BNdjhfZyIsInJvbGVfdHlwZSI6MSwidHBjIjoiVGVzdCIsInZlcnNpb24iOjEsImlhdCI6MTcyODg5NjcxNCwiZXhwIjoxNzI4OTAwMzE0fQ.cDsISme3IScyYsP0-04irZ1xlgB8duGg0wH0wOKJDy0",
-        "userName"
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZThSeU82RXFSTUdwbW51Q3BNdjhfZyIsInJvbGVfdHlwZSI6MSwidHBjIjoiVGVzdCIsInZlcnNpb24iOjEsImlhdCI6MTcyODkwMDQ0MCwiZXhwIjoxNzI4OTA0MDQwfQ.H8Y1Cii0_dUL8zb324NzDnrOeN-Ln5uu_v1tcjtU7SQ",
+        "userName2"
       )
       .then(() => {
         const stream = client.getMediaStream();

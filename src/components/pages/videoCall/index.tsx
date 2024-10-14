@@ -46,9 +46,12 @@ const VideoCall = ({ client, stream }: any) => {
     return () => {
       client.off("user-added", handleUserAdded);
       client.off("user-removed", handleUserRemoved);
+      if (client) {
+        client.leave();
+      }
     };
   }, [client]);
-
+  console.log(participants, "participantss");
   useEffect(() => {
     participants.forEach(async (participant) => {
       if (!videoContainerRef.current) return;
