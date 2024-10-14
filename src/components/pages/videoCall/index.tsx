@@ -21,11 +21,9 @@ const VideoCall: any = ({ client, stream }: any) => {
 
         try {
           stream.startVideo().then(() => {
-            stream
-              .attachVideo(client.getCurrentUserInfo().userId, RESOLUTION)
-              .then((userVideo: any) => {
-                videoContainerRef.current?.appendChild(userVideo);
-              });
+            stream.attachVideo(participant.userId, 3).then((userVideo: any) => {
+              videoContainerRef.current?.appendChild(userVideo);
+            });
           });
         } catch (error) {
           console.error(
