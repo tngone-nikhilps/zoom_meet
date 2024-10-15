@@ -20,11 +20,23 @@ const VideoCall: any = ({ client, stream }: any) => {
         if (!videoContainerRef.current) return;
 
         try {
-          stream.startVideo().then(() => {
-            stream.attachVideo(participant.userId, 3).then((userVideo: any) => {
-              videoContainerRef.current?.appendChild(userVideo);
-            });
-          });
+          await stream.startVideo();
+          const video = await stream.attachVideo(
+            participant.userId,
+            RESOLUTION
+          );
+          const videoWrapper = document.createElement("div");
+          videoWrapper.className = `video-wrapper ${
+            participant.isLocal ? "local" : "remote"
+          }`;
+          videoWrapper.appendChild(video);
+          const nameTag = document.createElement("div");
+          nameTag.className = "name-tag";
+          nameTag.textContent = `${participant.displayName} ${
+            participant.isLocal ? "(You)" : ""
+          }`;
+          videoWrapper.appendChild(nameTag);
+          videoContainerRef.current.appendChild(videoWrapper);
         } catch (error) {
           console.error(
             `Failed to attach video for user ${participant.userId}:`,
