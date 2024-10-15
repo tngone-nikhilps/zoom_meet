@@ -1,8 +1,37 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import ZoomVideo, { Participant } from "@zoom/videosdk";
+import React, {
+  useState,
+  useContext,
+  useRef,
+  useEffect,
+  DOMAttributes,
+  HTMLAttributes,
+  DetailedHTMLProps,
+  useCallback,
+} from "react";
+import ZoomVideo, {
+  Participant,
+  VideoPlayer,
+  VideoPlayerContainer,
+} from "@zoom/videosdk";
 import { VideoQuality } from "@zoom/videosdk";
 import { ZoomClient } from "../../../index-types";
+type CustomElement<T> = Partial<T & DOMAttributes<T> & { children: any }>;
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      ["video-player"]: DetailedHTMLProps<
+        HTMLAttributes<VideoPlayer>,
+        VideoPlayer
+      > & { class?: string };
+      ["video-player-container"]: CustomElement<VideoPlayerContainer> & {
+        class?: string;
+      };
+      // ['zoom-video']: DetailedHTMLProps<HTMLAttributes<VideoPlayer>, VideoPlayer> & { class?: string };
+      // ['zoom-video-container']: CustomElement<VideoPlayerContainer> & { class?: string };
+    }
+  }
+}
 const RESOLUTION = { width: 640, height: 360 };
 function useMount(fn: Function) {
   useEffect(() => {
@@ -40,10 +69,21 @@ function useParticipantsChange(
 const VideoCall: any = ({ client, stream }: any) => {
   const [participants, setParticipants] = useState<Participant[]>([]);
   const videoContainerRef = useRef<HTMLDivElement>(null);
+  const videoPlayerListRef = useRef<Record<string, VideoPlayer>>({});
 
   useParticipantsChange(client, (newParticipants) => {
     setParticipants(newParticipants);
   });
+  useEffect(() => {
+    if (participants.length > 0) {
+      participants.forEach((userId) => {
+        const attachment = videoPlayerListRef.current[`${userId}`];
+        if (attachment) {
+          stream?.attachVideo(userId, VideoQuality.Video_720P, attachment);
+        }
+      });
+    }
+  }, [participants]);
   useEffect(() => {
     participants.forEach(async (participant) => {
       if (!videoContainerRef.current) return;
@@ -73,13 +113,33 @@ const VideoCall: any = ({ client, stream }: any) => {
       }
     };
   }, [participants, stream]);
-
+  const setVideoPlayerRef = (userId: number, element: VideoPlayer | null) => {
+    if (element) {
+      videoPlayerListRef.current[`${userId}`] = element;
+    }
+  };
+  console.log(participants, "participantss");
   return (
     <div>
-      <div
-        ref={videoContainerRef}
-        className="video-container w-[50vw] h-[50vh]"
-      ></div>
+      <video-player-container class="video-container-wrap">
+        {participants.map((user) => {
+          return (
+            <div
+              className="video-cell relative w-[250px] aspect-video"
+              key={user.userId}
+            >
+              <div>
+                <video-player
+                  class="video-player absolute top-0 left-0 block bottom-0 right-0"
+                  ref={(element) => {
+                    setVideoPlayerRef(user.userId, element);
+                  }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </video-player-container>
     </div>
   );
 };

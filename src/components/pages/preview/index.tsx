@@ -102,23 +102,10 @@ const Preview: React.FC = () => {
     }
   };
   const joinConference = () => {
-    const renderVideo = async (event: { action: string; userId: any }) => {
-      console.log(event, "event");
-      const mediaStream = client.getMediaStream();
-      await mediaStream.startAudio();
-      await mediaStream.startVideo();
-      if (event.action === "Start") {
-        const userVideo = await mediaStream.attachVideo(
-          event.userId,
-          VideoQuality.Video_360P
-        );
-        videoContainerRef.current.appendChild(userVideo);
-      }
-    };
     client
       .join(
         "Test",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZThSeU82RXFSTUdwbW51Q3BNdjhfZyIsInJvbGVfdHlwZSI6MSwidHBjIjoiVGVzdCIsInZlcnNpb24iOjEsImlhdCI6MTcyODk4NDAyNCwiZXhwIjoxNzI4OTg3NjI0fQ.8fkpCxoLKvN-BRy-CZZq03lRy7lrzizaA7aALVd61pc",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZThSeU82RXFSTUdwbW51Q3BNdjhfZyIsInJvbGVfdHlwZSI6MSwidHBjIjoiVGVzdCIsInZlcnNpb24iOjEsImlhdCI6MTcyODk4Nzc2MCwiZXhwIjoxNzI4OTkxMzYwfQ.YhNEvu1gCxLgh8dOe5Eqz1EFDbDsi_sOmy9quJbFWT4",
         "userName2"
       )
       .then(() => {
@@ -126,7 +113,6 @@ const Preview: React.FC = () => {
         setStream(stream);
         setIsIncall(true);
       });
-    client.on("peer-video-state-change", renderVideo);
   };
   return (
     <div className="bg-black h-[100vh] text-white pt-[20px] ">
@@ -209,10 +195,7 @@ const Preview: React.FC = () => {
         </div>
       ) : (
         <>
-          <div
-            ref={videoContainerRef}
-            className="video-container w-[50vw] h-[50vh]"
-          ></div>
+          <VideoCall client={client} stream={stream}></VideoCall>
         </>
       )}
     </div>
