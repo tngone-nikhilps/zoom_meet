@@ -118,7 +118,7 @@ const Preview: React.FC = () => {
     client
       .join(
         "Test",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZThSeU82RXFSTUdwbW51Q3BNdjhfZyIsInJvbGVfdHlwZSI6MSwidHBjIjoiVGVzdCIsInZlcnNpb24iOjEsImlhdCI6MTcyODk3NjEwOCwiZXhwIjoxNzI4OTc5NzA4fQ.SuM3YQwSDKauDncBRMba918NXuq1Fu8zQE5jqeIrGWU",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfa2V5IjoiZThSeU82RXFSTUdwbW51Q3BNdjhfZyIsInJvbGVfdHlwZSI6MSwidHBjIjoiVGVzdCIsInZlcnNpb24iOjEsImlhdCI6MTcyODk4NDAyNCwiZXhwIjoxNzI4OTg3NjI0fQ.8fkpCxoLKvN-BRy-CZZq03lRy7lrzizaA7aALVd61pc",
         "userName2"
       )
       .then(() => {
